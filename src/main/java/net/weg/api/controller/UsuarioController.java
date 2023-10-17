@@ -3,6 +3,7 @@ package net.weg.api.controller;
 
 import net.weg.api.model.Carro;
 import net.weg.api.model.Usuario;
+import net.weg.api.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import net.weg.api.repository.*;
@@ -14,33 +15,18 @@ import java.util.NoSuchElementException;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
+    private UsuarioService usuarioService = new UsuarioService();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    private CarroDAO carroDAO = new CarroDAO();
+
 
     @GetMapping("/{id}")
     public Usuario buscarUsuario(@PathVariable(value = "id") Integer id) {
-        Usuario usuario = usuarioDAO.buscarUm(id);
-        try {
-            usuario.setCarro(new CarroDAO().buscarUm(usuario.getCarro().getId()));
-        } catch (NullPointerException ignore) {
-
-        }
-
-        return usuario;
+        return usuarioService.buscarUsuario(id);
     }
 
     @GetMapping()
     public Collection<Usuario> buscarTodos() {
-        Collection<Usuario> usuarios = usuarioDAO.buscarTodos();
-        for (Usuario usuario:usuarios) {
-            try {
-                usuario.setCarro(new CarroDAO().buscarUm(usuario.getCarro().getId()));
-            } catch (NullPointerException ignore) {
-
-            }
-
-        }
-        return usuarios;
+        return usuarioService.buscarTodos();
     }
 
     @DeleteMapping("/{id}")
@@ -51,15 +37,9 @@ public class UsuarioController {
 
     @PostMapping
     public void inserirUsuario(@RequestBody Usuario usuario) {
-        try {
-            carroDAO.buscarUm(usuario.getCarro().getId());
-        } catch (NoSuchElementException e) {
-            carroDAO.inserir(usuario.getCarro());
-        } catch (NullPointerException ignore) {
 
-        }
+        usuarioService.inserir(usuario);
 
-        usuarioDAO.inserir(usuario);
     }
 
     @PutMapping
