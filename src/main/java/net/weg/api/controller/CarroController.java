@@ -1,8 +1,7 @@
 package net.weg.api.controller;
 
+import lombok.AllArgsConstructor;
 import net.weg.api.model.Carro;
-import net.weg.api.model.Usuario;
-import net.weg.api.repository.UsuarioDAO;
 import net.weg.api.service.CarroService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,13 +9,14 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/carro")
+@AllArgsConstructor
 public class CarroController {
 
-    private CarroService carroService = new CarroService();
+    private CarroService carroService;
 
     @GetMapping("/{id}")
     public Carro buscarCarro(@PathVariable(value = "id") Integer id) {
-        return carroService.buscarCarro(id);
+        return carroService.buscarUm(id);
     }
 
 
@@ -27,17 +27,17 @@ public class CarroController {
 
     @DeleteMapping
     public void deletarCarro(@RequestParam(value = "id") Integer id) {
-        carroService.deletarCarro(id);
+        carroService.deletar(id);
     }
 
     @PostMapping
     public void inserirCarro(@RequestBody Carro carro) {
-        carroService.inserirCarro(carro);
+        carroService.salvar(carro);
     }
 
     @PutMapping
     public void atualizarCarro(@RequestBody Carro carro) {
-        carroService.atualizarCarro(carro);
+        carroService.salvar(carro);
     }
 
 }

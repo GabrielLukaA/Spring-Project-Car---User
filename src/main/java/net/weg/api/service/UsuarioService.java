@@ -1,72 +1,34 @@
 package net.weg.api.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.api.model.Usuario;
 
-import net.weg.api.repository.UsuarioDAO;
+import net.weg.api.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class UsuarioService {
 
-    private UsuarioDAO usuarioDAO;
-    private CarroService carroService;
+    private UsuarioRepository usuarioRepository;
 
-    public UsuarioService() {
-        usuarioDAO = new UsuarioDAO();
-        this.carroService = new CarroService();
-    }
-
-    public void inserir(Usuario usuario) {
-
-        try {
-            carroService.buscarCarro(usuario.getCarro().getId());
-        } catch (NoSuchElementException e) {
-            carroService.inserirCarro(usuario.getCarro());
-        } catch (NullPointerException ignore) {
-
-        }
-
-        usuarioDAO.inserir(usuario);
+    public void salvar(Usuario usuario) {
+        usuarioRepository.save(usuario);
     }
 
     public void deletar(Integer id) {
-        usuarioDAO.deletar(id);
-    }
-
-    public void atualizar(Usuario usuario) {
-        try {
-            carroService.buscarCarro(usuario.getCarro().getId());
-        } catch (NoSuchElementException e) {
-            carroService.inserirCarro(usuario.getCarro());
-        } catch (NullPointerException ignore) {
-
-        }
-        usuarioDAO.atualizar(usuario);
+        usuarioRepository.deleteById(id);
     }
 
     public Usuario buscarUsuario(Integer id) {
-        Usuario usuario = usuarioDAO.buscarUm(id);
-        try {
-            usuario.setCarro(new CarroService().buscarCarro(usuario.getCarro().getId()));
-        } catch (NullPointerException ignore) {
-
-        }
-        return usuario;
+        return usuarioRepository.findById(id).get();
     }
 
     public Collection<Usuario> buscarTodos() {
-        Collection<Usuario> usuarios = usuarioDAO.buscarTodos();
-        for (Usuario usuario : usuarios) {
-            try {
-                usuario.setCarro(new CarroService().buscarCarro(usuario.getCarro().getId()));
-            } catch (NullPointerException ignore) {
-
-            }
-
-        }
-        return usuarios;
+        return usuarioRepository.findAll();
     }
 }

@@ -1,44 +1,37 @@
 package net.weg.api.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.api.model.Carro;
-import net.weg.api.repository.CarroDAO;
+import net.weg.api.repository.CarroRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
 @Service
+@AllArgsConstructor
 public class CarroService {
 
-    public CarroService() {
-        this.carroDAO = new CarroDAO();
-    }
 
-    private CarroDAO carroDAO = new CarroDAO();
+    private CarroRepository carroRepository;
 
 
-    public Carro buscarCarro(Integer id) {
-        return carroDAO.buscarUm(id);
+    public Carro buscarUm(Integer id) {
+        return carroRepository.findById(id).get();
     }
 
 
     public Collection<Carro> buscarTodos() {
-        return carroDAO.buscarTodos();
+        return carroRepository.findAll();
     }
 
 
-    public void deletarCarro(Integer id) {
-        carroDAO.deletar(id);
+    public void deletar(Integer id) {
+        carroRepository.deleteById(id);
     }
 
 
-    public void inserirCarro(Carro carro) {
-        carroDAO.inserir(carro);
-    }
-
-
-    public void atualizarCarro(Carro carro) {
-        carroDAO.atualizar(carro);
+    public void salvar(Carro carro) {
+        carroRepository.save(carro);
     }
 
 }
