@@ -1,6 +1,7 @@
 package net.weg.api.repository;
 
 import net.weg.api.model.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,12 +9,13 @@ import java.sql.SQLException;
 public class UsuarioDAO extends DAOPadrao<Usuario, Integer> {
 
 
-    public UsuarioDAO(){
+    public UsuarioDAO() {
         super("usuario");
     }
 
     @Override
     public void atualizar(Usuario usuario) {
+        conectar();
         comandoSQL = "UPDATE usuario SET nome =? , senha = ?, idade=?, id_carro=? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL);) {
 
@@ -31,11 +33,18 @@ public class UsuarioDAO extends DAOPadrao<Usuario, Integer> {
             System.out.println("O usuário atualizado é o " + buscarUm(usuario.getId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
     public void inserir(Usuario usuario) {
+        conectar();
         comandoSQL = "INSERT INTO usuario " +
                 "VALUES(?,?,?,?,?);";
 //        String comandoSQL = "INSERT INTO usuario VALUES(" + usuario.getId() + ",'" + usuario.getNome() + "','" + usuario.getSenha() + "'," + usuario.getIdade() + ");";
@@ -56,6 +65,12 @@ public class UsuarioDAO extends DAOPadrao<Usuario, Integer> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

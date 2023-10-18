@@ -20,6 +20,7 @@ public class CarroDAO extends DAOPadrao<Carro, Integer> {
 
     @Override
     public void inserir(Carro obj) {
+        conectar();
         comandoSQL = "INSERT INTO carro values(?,?,?,?,?,?);";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL)) {
             statement.setInt(1, obj.getId());
@@ -31,12 +32,19 @@ public class CarroDAO extends DAOPadrao<Carro, Integer> {
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
     @Override
     public void atualizar(Carro obj) {
+        conectar();
         comandoSQL = "UPDATE carro SET preco=?, modelo=?, marca=?, ano=?, cor=? where id=?";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL)) {
             statement.setDouble(1, obj.getPreco());
@@ -49,6 +57,12 @@ public class CarroDAO extends DAOPadrao<Carro, Integer> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

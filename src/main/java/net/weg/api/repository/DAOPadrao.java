@@ -1,4 +1,5 @@
 package net.weg.api.repository;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +14,16 @@ public abstract class DAOPadrao<T, ID> implements ICRUD<T, ID> {
     private String tabela;
 
     public DAOPadrao(String tabela) {
-        this.connection = Banco.conectar();
+
         this.tabela = tabela;
     }
 
     public Connection getConnection() {
         return connection;
+    }
+
+    protected void conectar() {
+        this.connection = Banco.conectar();
     }
 
     public String getComandoSQL() {
@@ -30,6 +35,7 @@ public abstract class DAOPadrao<T, ID> implements ICRUD<T, ID> {
     }
 
     public Set<T> buscarTodos() {
+        conectar();
         comandoSQL = "SELECT * FROM " + tabela + ";";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL);) {
             ResultSet resultSet = statement.executeQuery();
@@ -43,23 +49,38 @@ public abstract class DAOPadrao<T, ID> implements ICRUD<T, ID> {
             return lista;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
 
     public void deletar(Integer id) {
+        conectar();
         comandoSQL = "DELETE FROM " + tabela + " where id = ?";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
 
     public T buscarUm(Integer id) {
+        conectar();
         comandoSQL = "SELECT * FROM " + tabela + " where id=?";
         try (PreparedStatement statement = connection.prepareStatement(comandoSQL)) {
             statement.setInt(1, id);
@@ -71,6 +92,12 @@ public abstract class DAOPadrao<T, ID> implements ICRUD<T, ID> {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
