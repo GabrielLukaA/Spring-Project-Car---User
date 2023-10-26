@@ -1,7 +1,6 @@
 package net.weg.api.service;
 
-import net.weg.api.model.Seguradora;
-import net.weg.api.model.*;
+import net.weg.api.model.entity.Seguro;
 import net.weg.api.repository.SeguroRepository;
 import org.springframework.stereotype.Service;
 

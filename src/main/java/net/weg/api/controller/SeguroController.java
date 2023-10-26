@@ -1,15 +1,11 @@
 package net.weg.api.controller;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
-import net.weg.api.model.Seguradora;
-import net.weg.api.model.Seguro;
+import net.weg.api.model.entity.Seguradora;
 import net.weg.api.service.SeguradoraService;
-import net.weg.api.service.SeguroService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor

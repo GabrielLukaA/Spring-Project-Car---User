@@ -1,7 +1,6 @@
 package net.weg.api.repository;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import net.weg.api.model.Endereco;
+import net.weg.api.model.entity.Endereco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

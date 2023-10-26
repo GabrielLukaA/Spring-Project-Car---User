@@ -1,4 +1,4 @@
-package net.weg.api.model;
+package net.weg.api.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

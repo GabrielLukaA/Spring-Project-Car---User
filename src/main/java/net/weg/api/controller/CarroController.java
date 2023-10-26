@@ -1,11 +1,17 @@
 package net.weg.api.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.api.model.Carro;
+import net.weg.api.model.dto.CarroCadastroDTO;
+import net.weg.api.model.dto.CarroEdicaoDTO;
+import net.weg.api.model.entity.Carro;
 import net.weg.api.service.CarroService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.CollationElementIterator;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/carro")
@@ -15,14 +21,30 @@ public class CarroController {
     private CarroService carroService;
 
     @GetMapping("/{id}")
-    public Carro buscarCarro(@PathVariable(value = "id") Integer id) {
-        return carroService.buscarUm(id);
+    public ResponseEntity<Carro> buscarCarro(@PathVariable(value = "id") Integer id) {
+        try {
+            return ResponseEntity.ok(carroService.buscarUm(id));
+            // return new ResponseEntity<>(carroService.buscarUm(id),HttpStatus.OK);
+            // return new ResponseEntity<>(carroService.buscarUm(id),200);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/s/{id}")
+    public ResponseEntity< Collection<Carro>> buscarCarrosSeguradora(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok(carroService.buscarCarrosSeguradora(id));
+    }
+
+    @GetMapping("/m")
+    public ResponseEntity<Collection<Carro>> buscarCarrosSeguradora(@RequestParam String marca) {
+        return new ResponseEntity<>(carroService.buscarCarrosMarca(marca), HttpStatus.OK);
     }
 
 
     @GetMapping()
-    public Collection<Carro> buscarTodos() {
-        return carroService.buscarTodos();
+    public ResponseEntity<Collection<Carro>> buscarTodos() {
+        return new ResponseEntity<>(carroService.buscarTodos(), HttpStatus.OK);
     }
 
     @DeleteMapping
@@ -31,13 +53,23 @@ public class CarroController {
     }
 
     @PostMapping
-    public void inserirCarro(@RequestBody Carro carro) {
-        carroService.salvar(carro);
+    public ResponseEntity<Carro> inserirCarro(@RequestBody CarroCadastroDTO carroDTO) {
+        try {
+            return new ResponseEntity(carroService.cadastrar(carroDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
     }
 
     @PutMapping
-    public void atualizarCarro(@RequestBody Carro carro) {
-        carroService.salvar(carro);
+    public ResponseEntity<Carro> atualizarCarro(@RequestBody CarroEdicaoDTO carroDTO) {
+        try {
+            return new ResponseEntity<>(carroService.editar(carroDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 }
