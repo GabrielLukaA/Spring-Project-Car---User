@@ -16,5 +16,5 @@ public class CarroEdicaoDTO {
     private String modelo;
     private Double preco;
     private Integer ano;
-    private Double motor;
+//    private Double motor;
 }
