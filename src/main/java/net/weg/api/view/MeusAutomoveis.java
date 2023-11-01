@@ -40,7 +40,7 @@ public class MeusAutomoveis extends VerticalLayout {
 
 
 
-        hl.add(new Button("ahj", e -> cadastro.open()));
+        hl.add(new Button("Cadastrar Carro", e -> cadastro.open()));
         add(hl, grid);
 
     }

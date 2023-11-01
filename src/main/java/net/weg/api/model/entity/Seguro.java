@@ -29,7 +29,7 @@ public class Seguro {
 
 
     private Double valor;
-    private String nome;
+//    private String nome;
     private String descricao;
     private Double valorFranquia;
     @ManyToOne

@@ -17,8 +17,8 @@ public class Cliente extends Usuario {
 
     @OneToMany
     private Set<Carro> carro;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Habilitacao habilitacao;
+//    @OneToOne(cascade = CascadeType.PERSIST)
+//    private Habilitacao habilitacao;
     @OneToMany(mappedBy = "cliente") // Serve para evitar duplicidade de ids foreign key, alguma coisa assim
     private Set<Seguro> seguros;
 

@@ -1,8 +1,9 @@
 package net.weg.api.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.api.model.entity.Seguradora;
-import net.weg.api.service.SeguradoraService;
+import net.weg.api.model.dto.SeguroCadastroDTO;
+import net.weg.api.model.entity.Seguro;
+import net.weg.api.service.SeguroService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,32 +13,32 @@ import java.util.List;
 @RequestMapping("/seguro")
 public class SeguroController {
 
-    private SeguradoraService seguradoraService;
+    private SeguroService seguroService;
 
     @DeleteMapping("/{id}")
     public void remover(@PathVariable Integer id){
-        seguradoraService.deletar(id);
+        seguroService.deletar(id);
     }
 
 
     @GetMapping("/{id}")
-    public Seguradora buscar( @PathVariable Integer id){
-        return seguradoraService.buscar(id);
+    public Seguro buscar( @PathVariable Integer id){
+        return seguroService.buscar(id);
     }
 
     @GetMapping
-    public List<Seguradora> buscar(){
-        return seguradoraService.buscar();
+    public List<Seguro> buscar(){
+        return seguroService.buscar();
     }
 
     @PostMapping
-    public void inserir(@RequestBody Seguradora seguradora){
-         seguradoraService.salvar(seguradora);
+    public void inserir(@RequestBody SeguroCadastroDTO seguro){
+         seguroService.salvar(seguro);
     }
 
     @PutMapping
-    public void atualizar(@RequestBody Seguradora seguradora){
-        seguradoraService.salvar(seguradora);
+    public void atualizar(@RequestBody SeguroCadastroDTO seguro){
+        seguroService.salvar(seguro);
     }
 
 }
