@@ -18,10 +18,20 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private String sobrenome;
+    private String usuario;
     private String senha;
+
+
     private Integer idade;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Endereco> endereco;
 
+
+
+    @Override
+    public String toString(){
+        return nome +" "+ sobrenome;
+    }
 
 }

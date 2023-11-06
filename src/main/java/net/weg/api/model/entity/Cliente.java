@@ -15,11 +15,16 @@ import java.util.Set;
 @Table(name = "tb_cliente")
 public class Cliente extends Usuario {
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Carro> carro;
 //    @OneToOne(cascade = CascadeType.PERSIST)
 //    private Habilitacao habilitacao;
-    @OneToMany(mappedBy = "cliente") // Serve para evitar duplicidade de ids foreign key, alguma coisa assim
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER) // Serve para evitar duplicidade de ids foreign key, alguma coisa assim
     private Set<Seguro> seguros;
 
+
+    @Override
+    public String toString(){
+        return super.toString();
+    }
 }
