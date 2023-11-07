@@ -3,6 +3,7 @@ package net.weg.api.controller;
 import lombok.AllArgsConstructor;
 import net.weg.api.model.dto.SeguroCadastroDTO;
 import net.weg.api.model.entity.Seguro;
+import net.weg.api.model.entity.SeguroId;
 import net.weg.api.service.SeguroService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,15 +16,15 @@ public class SeguroController {
 
     private SeguroService seguroService;
 
-    @DeleteMapping("/{id}")
-    public void remover(@PathVariable Integer id){
-        seguroService.deletar(id);
+    @DeleteMapping("/{seguroId}/{seguradoraId}")
+    public void remover(@PathVariable Integer seguroId, @PathVariable Integer seguradoraId){
+        seguroService.deletar(seguroId, seguradoraId);
     }
 
 
-    @GetMapping("/{id}")
-    public Seguro buscar( @PathVariable Integer id){
-        return seguroService.buscar(id);
+    @GetMapping("/{seguroId}/{seguradoraId}")
+    public Seguro buscar( @PathVariable Integer seguroId, @PathVariable Integer seguradoraId){
+        return seguroService.buscar(seguroId, seguradoraId);
     }
 
     @GetMapping

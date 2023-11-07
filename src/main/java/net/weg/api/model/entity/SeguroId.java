@@ -8,11 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data@NoArgsConstructor@AllArgsConstructor@Embeddable
-public class SeguroId {
-    private Integer seguradoraId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import java.io.Serializable;
+
+@Data@Embeddable@AllArgsConstructor
+public class SeguroId implements Serializable {
     private Integer seguroId;
+    private Integer seguradoraId;
+    private static Integer nextId = 1;
+
+    protected SeguroId(){
+        seguroId = nextId;
+        nextId++;
+    }
 //    private Integer veiculoId;
 
 }

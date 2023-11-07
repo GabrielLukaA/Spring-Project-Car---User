@@ -23,4 +23,9 @@ public class Carro {
     private Seguro seguro;
 
 
+    @Override
+    public String toString(){
+        return marca + " - " + modelo + "("+placa+")";
+    }
+
 }
