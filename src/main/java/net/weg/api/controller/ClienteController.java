@@ -19,7 +19,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public Cliente buscarUsuario(@PathVariable(value = "id") Integer id) {
-        return clienteService.buscarUsuario(id);
+        return clienteService.buscarUm(id);
     }
 
     @GetMapping()
@@ -35,12 +35,12 @@ public class ClienteController {
 
     @PostMapping
     public void inserirUsuario(@RequestBody UsuarioCadastroDTO cliente) {
-        clienteService.salvar(cliente);
+        clienteService.cadastrar(cliente);
     }
 
     @PutMapping
     public void atualizarUsuario(@RequestBody UsuarioCadastroDTO cliente) {
-        clienteService.salvar(cliente);
+        clienteService.editar(cliente);
     }
 
 

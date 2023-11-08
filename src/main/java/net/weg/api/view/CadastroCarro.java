@@ -18,38 +18,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Route(value = "/cadastro", layout = NavBarApp.class)
-public class CadastroCarro extends FormLayout {
+public class CadastroCarro extends Dialog {
 
+
+    private TextField placa = new TextField("Placa");
+    private TextField marca = new TextField("Marca");
+    private TextField cor = new TextField("Cor");
+    private TextField modelo = new TextField("Modelo");
+    private IntegerField ano = new IntegerField("Ano");
+    private NumberField preco = new NumberField("Preço");
+
+    private FormLayout formLayout = new FormLayout(placa,marca,cor,modelo,ano,preco);
 
     private final CarroService carroService;
-    public CadastroCarro(CarroService carroService, Dialog dialog) {
+    public CadastroCarro(CarroService carroService) throws Exception {
 this.carroService = carroService;
+        Button salvar = new BotaoSalvar(carroService,        new CarroCadastroDTO(marca.getValue(),
+                placa.getValue(), cor.getValue(),modelo.getValue(), preco.getValue(), ano.getValue())) ;
 
-        TextField placa = new TextField("Placa");
-        TextField marca = new TextField("Marca");
-        TextField cor = new TextField("Cor");
-        TextField modelo = new TextField("Modelo");
-
-        IntegerField ano = new IntegerField("Ano");
-        NumberField preco = new NumberField("Preço");
-
-        Button salvar = new Button("Salvar", event -> {
-
-                CarroCadastroDTO carroCadastroDTO = new CarroCadastroDTO(marca.getValue(),
-                        placa.getValue(), cor.getValue(),modelo.getValue(), preco.getValue(), ano.getValue());
-
-                try {
-                    carroService.cadastrar(carroCadastroDTO);
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                dialog.close();
-
-        });
-        Button cancelar = new Button("Cancelar", e -> dialog.close());
-        dialog.getFooter().add(cancelar, salvar);
-        add(placa, marca, cor, modelo, ano, preco);
+                this.close();
+        Button cancelar = new Button("Cancelar", e -> this.close());
+        this.getFooter().add(cancelar, salvar);
+        add(formLayout);
 
     }
 

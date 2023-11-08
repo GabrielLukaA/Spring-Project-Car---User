@@ -15,29 +15,33 @@ import net.weg.api.service.SeguradoraService;
 import net.weg.api.service.SeguroService;
 import org.springframework.beans.BeanUtils;
 
-public class CadastroSeguro extends FormLayout {
+public class CadastroSeguro extends Dialog {
     private  SeguroService seguroService;
 
+
+    private NumberField valor = new NumberField("Valor");
+//        TextField nome = new TextField("Nome");
+    private TextField descricao = new TextField("Descrição");
+    private NumberField valorFranquia = new NumberField("Valor Franquia");
+    private Select<Seguradora> seguradora = new Select<>();
+    private Select<Carro> veiculo = new Select<>();
+    private         Select<Cliente> usuario = new Select<>();
+
+    private FormLayout formLayout = new FormLayout(valor,descricao,valorFranquia,seguradora,veiculo,usuario);
+
     CadastroSeguro(SeguradoraService seguradoraService, CarroService carroService,
-                   ClienteService usuarioService, Dialog dialog, SeguroService seguroService){
+                   ClienteService usuarioService, SeguroService seguroService){
         this.seguroService = seguroService;
 
-        NumberField valor = new NumberField("Valor");
-//        TextField nome = new TextField("Nome");
-        TextField descricao = new TextField("Descrição");
-        NumberField valorFranquia = new NumberField("Valor Franquia");
-        Select<Seguradora> seguradora = new Select<>();
         seguradora.setLabel("Seguradora");
         seguradora.setItems(seguradoraService.buscar());
-        Select<Carro> veiculo = new Select<>();
         veiculo.setLabel("Veículo");
         veiculo.setItems(carroService.buscarTodos());
-        Select<Cliente> usuario = new Select<>();
 //        usuario.setItemLabelGenerator(Usuario::toString);
         usuario.setLabel("Usuário");
         usuario.setItems(usuarioService.buscarTodos());
 
-        add(valor,descricao,valorFranquia,seguradora,veiculo,usuario);
+
 
         Button salvar = new Button("Salvar", event -> {
 
@@ -48,10 +52,11 @@ public class CadastroSeguro extends FormLayout {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            dialog.close();
+            this.close();
 
         });
-        Button cancelar = new Button("Cancelar", e -> dialog.close());
-        dialog.getFooter().add(cancelar, salvar);
+        Button cancelar = new Button("Cancelar", e -> this.close());
+        this.getFooter().add(cancelar, salvar);
+        add(formLayout);
     }
 }

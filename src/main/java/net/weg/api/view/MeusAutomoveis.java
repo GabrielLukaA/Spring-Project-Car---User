@@ -15,33 +15,21 @@ import net.weg.api.model.entity.Seguro;
 import net.weg.api.service.CarroService;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Route(value = "/meus-autos", layout = NavBarApp.class)
-public class MeusAutomoveis extends VerticalLayout {
+public class MeusAutomoveis extends PaginaPadrao<Carro> {
 
 
 
     public MeusAutomoveis(CarroService carroService) {
-
-        Grid grid = new Grid(Carro.class);
-        HorizontalLayout hl = new HorizontalLayout();
-        hl.add(new H1("Meus automoveis"));
-        Dialog cadastro = new Dialog();
-        cadastro.add(new CadastroCarro(carroService, cadastro));
-        grid.setItems(carroService.buscarTodos());
-
-
-
-
+        super("Meus automóveis",carroService.buscarTodos(),Carro.class,
+                new Button("Novo Carro", e-> new CadastroCarro(carroService).open()));
 
 //        Button salvar = new Button("Salvar", e -> cadastro.close());
 
 
-
-
-        hl.add(new Button("Cadastrar Carro", e -> cadastro.open()));
-        add(hl, grid);
 
     }
 }

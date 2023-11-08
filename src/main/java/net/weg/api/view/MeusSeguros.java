@@ -16,18 +16,13 @@ import net.weg.api.service.SeguroService;
 import java.util.ArrayList;
 
 @Route(value = "/meus-seguros", layout = NavBarApp.class)
-public class MeusSeguros extends VerticalLayout {
+public class MeusSeguros extends PaginaPadrao<Seguro> {
 
     public MeusSeguros(SeguradoraService seguradoraService, CarroService carroService,
                        ClienteService usuarioService, SeguroService seguroService) {
-        Grid<Seguro> seguros = new Grid(Seguro.class);
-        HorizontalLayout hl = new HorizontalLayout();
-        hl.add(new H1("Meus Seguros"));
-        seguros.setItems(seguroService.buscar());
-        Dialog cadastro = new Dialog();
-        cadastro.add(new CadastroSeguro(seguradoraService, carroService, usuarioService, cadastro, seguroService));
-        hl.add(new Button("Novo Seguro", e -> cadastro.open()));
-        add(hl, seguros);
+        super("Meus Seguros", seguroService.buscar(), Seguro.class,
+                new Button("Novo Seguro", e -> new CadastroSeguro(seguradoraService, carroService, usuarioService, seguroService).open()));
+
 
     }
 

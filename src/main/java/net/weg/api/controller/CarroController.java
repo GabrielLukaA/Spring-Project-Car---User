@@ -55,7 +55,8 @@ public class CarroController {
     @PostMapping
     public ResponseEntity<Carro> inserirCarro(@RequestBody CarroCadastroDTO carroDTO) {
         try {
-            return new ResponseEntity(carroService.cadastrar(carroDTO), HttpStatus.CREATED);
+           carroService.cadastrar(carroDTO);
+            return new ResponseEntity( HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -65,7 +66,8 @@ public class CarroController {
     @PutMapping
     public ResponseEntity<Carro> atualizarCarro(@RequestBody CarroEdicaoDTO carroDTO) {
         try {
-            return new ResponseEntity<>(carroService.editar(carroDTO), HttpStatus.OK);
+            carroService.editar(carroDTO);
+            return new ResponseEntity<>( HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

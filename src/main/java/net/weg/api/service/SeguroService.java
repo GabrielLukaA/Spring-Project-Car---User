@@ -1,10 +1,13 @@
 package net.weg.api.service;
 
 import lombok.AllArgsConstructor;
+import net.weg.api.model.dto.IDTO;
 import net.weg.api.model.dto.SeguroCadastroDTO;
+import net.weg.api.model.entity.Carro;
 import net.weg.api.model.entity.Seguro;
 import net.weg.api.model.entity.SeguroId;
 import net.weg.api.repository.SeguroRepository;
+import net.weg.api.view.IService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +15,18 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SeguroService {
-    private SeguroRepository seguroRepository;
+public class SeguroService implements IService<Seguro, Integer>  {
+    private SeguroRepository seguroRepository ;
 
-    public void salvar(SeguroCadastroDTO seguroCadastroDTO){
+    public void cadastrar(IDTO dto){
+        SeguroCadastroDTO seguroCadastroDTO = (SeguroCadastroDTO) dto;
+        Seguro seguro = new Seguro();
+        BeanUtils.copyProperties(seguroCadastroDTO, seguro);
+        seguroRepository.save(seguro);
+    }
+
+    public void editar(IDTO dto){
+        SeguroCadastroDTO seguroCadastroDTO = (SeguroCadastroDTO) dto;
         Seguro seguro = new Seguro();
         BeanUtils.copyProperties(seguroCadastroDTO, seguro);
         seguroRepository.save(seguro);
@@ -26,11 +37,11 @@ public class SeguroService {
         seguroRepository.deleteById(new SeguroId(seguroId, seguradoraId));
     }
 
-    public Seguro buscar(Integer seguroId, Integer seguradoraId) {
+    public Seguro buscarUm(Integer seguroId, Integer seguradoraId) {
         return seguroRepository.findById(new SeguroId(seguroId, seguradoraId)).get();
     }
 
-    public List<Seguro> buscar() {
+    public List<Seguro> buscarTodos() {
         return seguroRepository.findAll();
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class EnderecoCadastroDTO {
+public class EnderecoCadastroDTO implements IDTO {
     private String rua;
     private String bairro;
     private Integer numero;

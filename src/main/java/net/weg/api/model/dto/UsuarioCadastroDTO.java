@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class UsuarioCadastroDTO {
+public class UsuarioCadastroDTO implements IDTO {
     private String nome;
     private String sobrenome;
     private String usuario;
