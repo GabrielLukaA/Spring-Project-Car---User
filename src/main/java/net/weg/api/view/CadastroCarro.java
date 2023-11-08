@@ -6,10 +6,13 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.LoginI18n;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import lombok.Getter;
 import net.weg.api.model.dto.CarroCadastroDTO;
 import net.weg.api.service.CarroService;
 
@@ -18,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Route(value = "/cadastro", layout = NavBarApp.class)
-public class CadastroCarro extends Dialog {
+public class CadastroCarro extends IFormulario {
 
 
     private TextField placa = new TextField("Placa");
@@ -28,20 +31,40 @@ public class CadastroCarro extends Dialog {
     private IntegerField ano = new IntegerField("Ano");
     private NumberField preco = new NumberField("Preço");
 
-    private FormLayout formLayout = new FormLayout(placa,marca,cor,modelo,ano,preco);
+    @Getter
+    private Button salvar;
 
-    private final CarroService carroService;
-    public CadastroCarro(CarroService carroService) throws Exception {
-this.carroService = carroService;
-        Button salvar = new BotaoSalvar(carroService,        new CarroCadastroDTO(marca.getValue(),
-                placa.getValue(), cor.getValue(),modelo.getValue(), preco.getValue(), ano.getValue())) ;
 
-                this.close();
-        Button cancelar = new Button("Cancelar", e -> this.close());
-        this.getFooter().add(cancelar, salvar);
-        add(formLayout);
+
+
+
+    private CarroService carroService;
+
+    public CadastroCarro(CarroService carroService) {
+        this.carroService = carroService;
+        this.salvar = criarBotaoSalvar();
+        this.add(placa, marca, cor, modelo, ano, preco);
 
     }
 
+
+    private Button criarBotaoSalvar(){
+        return new BotaoSalvar(event ->{
+            Notification notification = new Notification();
+            notification.setDuration(3000);
+            try {
+                carroService.cadastrar(new CarroCadastroDTO(marca.getValue(),
+                        placa.getValue(), cor.getValue(), modelo.getValue(), preco.getValue(), ano.getValue()));
+                notification.setText("Cadastro realizado com sucesso!");
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            } catch (Exception e) {
+                notification.setText("Erro no cadastro!");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                throw new RuntimeException(e);
+            } finally {
+                notification.open();
+            }
+        });
+    }
 
 }

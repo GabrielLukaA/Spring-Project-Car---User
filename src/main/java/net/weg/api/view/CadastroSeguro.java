@@ -34,7 +34,7 @@ public class CadastroSeguro extends Dialog {
         this.seguroService = seguroService;
 
         seguradora.setLabel("Seguradora");
-        seguradora.setItems(seguradoraService.buscar());
+        seguradora.setItems(seguradoraService.buscarTodos());
         veiculo.setLabel("Veículo");
         veiculo.setItems(carroService.buscarTodos());
 //        usuario.setItemLabelGenerator(Usuario::toString);
@@ -48,7 +48,7 @@ public class CadastroSeguro extends Dialog {
             SeguroCadastroDTO seguroCadastroDTO = new SeguroCadastroDTO(valor.getValue(), descricao.getValue(), valorFranquia.getValue(), seguradora.getValue(), veiculo.getValue(), usuario.getValue());
             try {
 
-                seguroService.salvar(seguroCadastroDTO);
+                seguroService.cadastrar(seguroCadastroDTO);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

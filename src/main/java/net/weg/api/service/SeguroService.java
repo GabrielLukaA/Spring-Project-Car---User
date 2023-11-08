@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SeguroService implements IService<Seguro, Integer>  {
+public class SeguroService implements IService<Seguro, SeguroId>  {
     private SeguroRepository seguroRepository ;
 
     public void cadastrar(IDTO dto){
@@ -32,13 +32,13 @@ public class SeguroService implements IService<Seguro, Integer>  {
         seguroRepository.save(seguro);
     }
 
-    public void deletar(Integer seguroId, Integer seguradoraId) {
+    public void deletar(SeguroId id) {
 
-        seguroRepository.deleteById(new SeguroId(seguroId, seguradoraId));
+        seguroRepository.deleteById(id);
     }
 
-    public Seguro buscarUm(Integer seguroId, Integer seguradoraId) {
-        return seguroRepository.findById(new SeguroId(seguroId, seguradoraId)).get();
+    public Seguro buscarUm(SeguroId id) {
+        return seguroRepository.findById(id).get();
     }
 
     public List<Seguro> buscarTodos() {

@@ -18,7 +18,7 @@ public class ClienteController {
 
 
     @GetMapping("/{id}")
-    public Cliente buscarUsuario(@PathVariable(value = "id") Integer id) {
+    public Cliente buscarUm(@PathVariable(value = "id") Integer id) {
         return clienteService.buscarUm(id);
     }
 
@@ -28,18 +28,18 @@ public class ClienteController {
     }
 
     @DeleteMapping
-    public void deletarUsuario(@RequestParam Integer id) {
+    public void deletar(@RequestParam Integer id) {
         clienteService.deletar(id);
     }
 
 
     @PostMapping
-    public void inserirUsuario(@RequestBody UsuarioCadastroDTO cliente) {
+    public void cadastrar(@RequestBody UsuarioCadastroDTO cliente) {
         clienteService.cadastrar(cliente);
     }
 
     @PutMapping
-    public void atualizarUsuario(@RequestBody UsuarioCadastroDTO cliente) {
+    public void editar(@RequestBody UsuarioCadastroDTO cliente) {
         clienteService.editar(cliente);
     }
 

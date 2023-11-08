@@ -73,7 +73,7 @@ public class CadastroUsuario extends VerticalLayout {
                     BeanUtils.copyProperties(enderecoCadastroDTO, endereco);
                     enderecos.add(endereco);
                 });
-                usuarioService.salvar(
+                usuarioService.cadastrar(
                         new UsuarioCadastroDTO(nome.getValue(), sobrenome.getValue(), usuario.getValue(), senha.getValue(), idade.getValue(), enderecos));
 
                 notification.setText("Usuário Cadastrado com sucesso!");
