@@ -33,7 +33,12 @@ public class CarroController {
 
     @GetMapping("/s/{id}")
     public ResponseEntity< Collection<Carro>> buscarCarrosSeguradora(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok(carroService.buscarCarrosSeguradora(id));
+        try {
+            return new ResponseEntity(carroService.buscarCarrosSeguradora(id), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @GetMapping("/m")

@@ -5,6 +5,7 @@ import net.weg.api.model.dto.SeguroCadastroDTO;
 import net.weg.api.model.entity.Seguro;
 import net.weg.api.model.entity.SeguroId;
 import net.weg.api.service.SeguroService;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/seguro")
 public class SeguroController {
+
 
     private SeguroService seguroService;
 
@@ -38,7 +40,10 @@ public class SeguroController {
     }
 
     @PutMapping
-    public void editar(@RequestBody SeguroCadastroDTO seguro){
+    public void editar(@RequestBody SeguroCadastroDTO seguro, @PathVariable Integer seguroId){
+        ModelMapper mapper = new ModelMapper();
+        Seguro seguroOld = seguroService.buscarUm(new SeguroId(seguroId, seguro.getSeguradora().getId()));
+        mapper.map(seguro, seguroOld);
         seguroService.editar(seguro);
     }
 
